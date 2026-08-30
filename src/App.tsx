@@ -212,7 +212,7 @@ function App() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1, ease: EASE }}
           >
-            The future needs<br />a constituency.
+            Devour the sun.
           </motion.h1>
 
           <motion.div
