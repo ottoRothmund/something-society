@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import SmokeField from './SmokeField'
 import './App.css'
 
 const EMAIL = 'hello@somethingsociety.org'
@@ -196,6 +197,7 @@ function App() {
       </AnimatePresence>
 
       <section className="hero" id="top">
+        <SmokeField />
         <div className="hero-inner">
           <motion.div
             className="hero-meta"

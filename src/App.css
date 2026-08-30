@@ -170,7 +170,10 @@ main {
   letter-spacing: 0.1em;
 }
 
-/* ── Hero ── */
+/* ── Hero ──
+   A lit smoke field behind the type: WebGL plumes on a fine dot weave.
+   The hero runs dark whatever the page palette is, so every token inside it
+   flips to the inverted set. */
 
 .hero {
   position: relative;
@@ -179,6 +182,36 @@ main {
   flex-direction: column;
   justify-content: space-between;
   padding-top: calc(var(--head-h) + 16px);
+  background: var(--smoke-base);
+  color: var(--on-dark);
+  isolation: isolate;
+}
+
+.smoke {
+  position: absolute;
+  z-index: 0;
+  overflow: hidden;
+  background: var(--smoke-base);
+  inset: 0;
+}
+
+.smoke-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* No WebGL: a still approximation of the same lighting. */
+.smoke.is-fallback {
+  background:
+    radial-gradient(120% 78% at 62% 8%, rgba(160, 164, 158, 0.5), transparent 62%),
+    radial-gradient(90% 62% at 18% 74%, rgba(120, 124, 120, 0.28), transparent 66%),
+    var(--smoke-base);
+}
+
+.hero > *:not(.smoke) {
+  position: relative;
+  z-index: 1;
 }
 
 .hero-inner {
@@ -196,7 +229,7 @@ main {
   display: flex;
   flex-wrap: wrap;
   gap: 8px clamp(20px, 3vw, 44px);
-  color: var(--muted);
+  color: var(--muted-invert);
   font-family: var(--mono);
   font-size: 0.62rem;
   letter-spacing: 0.1em;
@@ -222,7 +255,7 @@ main {
 
 .hero-index {
   margin: 0;
-  color: var(--faint);
+  color: var(--muted-invert);
   font-family: var(--mono);
   font-size: 0.62rem;
   letter-spacing: 0.1em;
@@ -235,7 +268,7 @@ main {
 
 .hero-intro > p {
   margin: 0;
-  color: var(--muted);
+  color: rgba(247, 246, 244, 0.72);
   font-size: clamp(0.95rem, 1.05vw, 1.05rem);
   line-height: 1.62;
   text-wrap: pretty;
@@ -259,7 +292,7 @@ main {
 
 .facts div {
   padding: 22px 24px 26px 0;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--line-invert);
 }
 
 .facts dt {
@@ -270,7 +303,7 @@ main {
 
 .facts dd {
   margin: 10px 0 0;
-  color: var(--muted);
+  color: var(--muted-invert);
   font-family: var(--mono);
   font-size: 0.62rem;
   letter-spacing: 0.09em;

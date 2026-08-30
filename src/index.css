@@ -16,6 +16,8 @@
   --line-invert: rgba(247, 246, 244, 0.16);
   --sans: 'Inter Tight Variable', 'Inter Tight', Helvetica, Arial, sans-serif;
   --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --smoke-base: #08080a;
+  --smoke-plume: #7e8280;
   --pad: clamp(20px, 4vw, 72px);
   --head-h: 70px;
   --max: 1400px;
@@ -36,6 +38,8 @@
   --muted: #767c82;
   --faint: #9ba1a7;
   --night: #0b0d0f;
+  --smoke-base: #06080a;
+  --smoke-plume: #79828a;
   --line: rgba(20, 23, 26, 0.12);
   --line-strong: rgba(20, 23, 26, 0.24);
 }
@@ -47,6 +51,8 @@
   --muted: #837c70;
   --faint: #a8a094;
   --night: #100e0a;
+  --smoke-base: #0a0806;
+  --smoke-plume: #857d6e;
   --line: rgba(27, 24, 19, 0.13);
   --line-strong: rgba(27, 24, 19, 0.26);
 }
@@ -59,6 +65,8 @@
   --muted: #8b8985;
   --faint: #6a6864;
   --night: #000000;
+  --smoke-base: #050505;
+  --smoke-plume: #6f716d;
   --on-dark: #ecebe8;
   --muted-invert: rgba(236, 235, 232, 0.56);
   --line: rgba(236, 235, 232, 0.14);
