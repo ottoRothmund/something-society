@@ -11,6 +11,7 @@
   --night: #0d0d0d;
   --on-dark: #f7f6f4;
   --muted-invert: rgba(247, 246, 244, 0.56);
+  --body-invert: rgba(247, 246, 244, 0.72);
   --line: rgba(19, 19, 19, 0.12);
   --line-strong: rgba(19, 19, 19, 0.24);
   --line-invert: rgba(247, 246, 244, 0.16);
@@ -69,6 +70,7 @@
   --smoke-plume: #6f716d;
   --on-dark: #ecebe8;
   --muted-invert: rgba(236, 235, 232, 0.56);
+  --body-invert: rgba(236, 235, 232, 0.72);
   --line: rgba(236, 235, 232, 0.14);
   --line-strong: rgba(236, 235, 232, 0.26);
   --line-invert: rgba(236, 235, 232, 0.16);

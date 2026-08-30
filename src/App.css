@@ -268,7 +268,7 @@ main {
 
 .hero-intro > p {
   margin: 0;
-  color: rgba(247, 246, 244, 0.72);
+  color: var(--body-invert);
   font-size: clamp(0.95rem, 1.05vw, 1.05rem);
   line-height: 1.62;
   text-wrap: pretty;
