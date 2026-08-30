@@ -19,8 +19,24 @@ main {
 }
 
 /* ── Header ──
-   Praxis pattern: fixed, no background, mix-blend-difference so the bar
-   inverts itself against whatever section is scrolling under it. */
+   Palantir pattern: a floating glass pill — blurred backdrop, faint grey film,
+   10px radius, inset from the gutter, going full-bleed and square on mobile.
+   The glass is a separate fixed layer so the label bar above it can sit in
+   mix-blend-difference and invert against whatever scrolls underneath. */
+
+.header-glass {
+  position: fixed;
+  z-index: 99;
+  top: 16px;
+  right: calc(var(--pad) - 20px);
+  left: calc(var(--pad) - 20px);
+  height: var(--head-h);
+  border-radius: 10px;
+  backdrop-filter: blur(10px) saturate(150%);
+  background: rgba(171, 171, 171, 0.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  pointer-events: none;
+}
 
 .header {
   position: fixed;
@@ -36,11 +52,11 @@ main {
 .header-inner {
   display: flex;
   width: min(100%, var(--max));
-  height: var(--head-h);
+  height: calc(var(--head-h) + 16px);
   align-items: center;
   justify-content: space-between;
   margin: 0 auto;
-  padding: 0 var(--pad);
+  padding: 16px var(--pad) 0;
   gap: 24px;
 }
 
@@ -118,7 +134,7 @@ main {
   flex-direction: column;
   padding: 28px var(--pad) 48px;
   background: var(--paper);
-  inset: var(--head-h) 0 0;
+  inset: 64px 0 0;
 }
 
 .site-menu__meta {
@@ -162,7 +178,7 @@ main {
   min-height: 100dvh;
   flex-direction: column;
   justify-content: space-between;
-  padding-top: var(--head-h);
+  padding-top: calc(var(--head-h) + 16px);
 }
 
 .hero-inner {
@@ -264,7 +280,7 @@ main {
 /* ── Sections ── */
 
 section {
-  scroll-margin-top: calc(var(--head-h) + 8px);
+  scroll-margin-top: calc(var(--head-h) + 28px);
 }
 
 .divisions,
@@ -778,6 +794,19 @@ section {
 }
 
 @media (max-width: 900px) {
+  .header-glass {
+    top: 0;
+    right: 0;
+    left: 0;
+    border-radius: 0;
+    height: 64px;
+  }
+
+  .header-inner {
+    height: 64px;
+    padding: 0 var(--pad);
+  }
+
   .header-nav {
     display: none;
   }

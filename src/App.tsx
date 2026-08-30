@@ -132,6 +132,7 @@ function App() {
     <main>
       <a className="skip-link" href="#content">Skip to content</a>
 
+      <div className="header-glass" aria-hidden="true" />
       <header className="header">
         <div className="header-inner">
           <a className="wordmark" href="#top" aria-label="Something Society, home">

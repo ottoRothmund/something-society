@@ -17,7 +17,7 @@
   --sans: 'Inter Tight Variable', 'Inter Tight', Helvetica, Arial, sans-serif;
   --mono: 'IBM Plex Mono', ui-monospace, monospace;
   --pad: clamp(20px, 4vw, 72px);
-  --head-h: 76px;
+  --head-h: 70px;
   --max: 1400px;
   color: var(--ink);
   background: var(--paper);
@@ -72,7 +72,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: calc(var(--head-h) + 8px);
+  scroll-padding-top: calc(var(--head-h) + 28px);
   background: var(--paper);
 }
 
