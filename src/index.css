@@ -1,0 +1,131 @@
+@import '@fontsource-variable/inter-tight';
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/500.css';
+
+:root {
+  --ink: #131313;
+  --paper: #f7f6f4;
+  --surface: #eeece8;
+  --muted: #7c7a75;
+  --faint: #a3a09a;
+  --night: #0d0d0d;
+  --on-dark: #f7f6f4;
+  --muted-invert: rgba(247, 246, 244, 0.56);
+  --line: rgba(19, 19, 19, 0.12);
+  --line-strong: rgba(19, 19, 19, 0.24);
+  --line-invert: rgba(247, 246, 244, 0.16);
+  --sans: 'Inter Tight Variable', 'Inter Tight', Helvetica, Arial, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --pad: clamp(20px, 4vw, 72px);
+  --head-h: 76px;
+  --max: 1400px;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: var(--sans);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Alternate palettes. Switch with data-theme on <html>. */
+[data-theme='slate'] {
+  --ink: #14171a;
+  --paper: #f4f5f6;
+  --surface: #e9ebed;
+  --muted: #767c82;
+  --faint: #9ba1a7;
+  --night: #0b0d0f;
+  --line: rgba(20, 23, 26, 0.12);
+  --line-strong: rgba(20, 23, 26, 0.24);
+}
+
+[data-theme='bone'] {
+  --ink: #1b1813;
+  --paper: #f6f3ec;
+  --surface: #ece7dc;
+  --muted: #837c70;
+  --faint: #a8a094;
+  --night: #100e0a;
+  --line: rgba(27, 24, 19, 0.13);
+  --line-strong: rgba(27, 24, 19, 0.26);
+}
+
+[data-theme='ink'] {
+  color-scheme: dark;
+  --ink: #ecebe8;
+  --paper: #0c0c0c;
+  --surface: #151515;
+  --muted: #8b8985;
+  --faint: #6a6864;
+  --night: #000000;
+  --on-dark: #ecebe8;
+  --muted-invert: rgba(236, 235, 232, 0.56);
+  --line: rgba(236, 235, 232, 0.14);
+  --line-strong: rgba(236, 235, 232, 0.26);
+  --line-invert: rgba(236, 235, 232, 0.16);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--head-h) + 8px);
+  background: var(--paper);
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background: var(--paper);
+}
+
+body.menu-open {
+  overflow: hidden;
+}
+
+a,
+button {
+  color: inherit;
+  font: inherit;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  color: inherit;
+}
+
+::selection {
+  color: var(--paper);
+  background: var(--ink);
+}
+
+:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 4px;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
