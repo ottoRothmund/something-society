@@ -4,7 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import SmokeField from './SmokeField'
 import './App.css'
 
-const EMAIL = 'hello@somethingsociety.org'
+const EMAIL = 'hello@umbrasociety.org'
 const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number]
 
 const navItems: [string, string][] = [
@@ -136,8 +136,8 @@ function App() {
       <div className="header-glass" aria-hidden="true" />
       <header className="header">
         <div className="header-inner">
-          <a className="wordmark" href="#top" aria-label="Something Society, home">
-            Something Society
+          <a className="wordmark" href="#top" aria-label="Umbra Society, home">
+            Umbra Society
           </a>
 
           <div className="header-end">
@@ -224,10 +224,10 @@ function App() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.7, delay: 0.28, ease: EASE }}
           >
-            <p className="hero-index" aria-hidden="true">SS / 001</p>
+            <p className="hero-index" aria-hidden="true">US / 001</p>
             <div className="hero-intro">
               <p>
-                Something Society publishes arguments, backs singular people, moves ideas through a network,
+                Umbra Society publishes arguments, backs singular people, moves ideas through a network,
                 and builds the instruments those ideas require.
               </p>
               <div className="hero-links">
@@ -264,7 +264,7 @@ function App() {
           </motion.div>
 
           <div className="division-system">
-            <div className="division-list" role="tablist" aria-label="Something Society divisions">
+            <div className="division-list" role="tablist" aria-label="Umbra Society divisions">
               {divisions.map((division) => (
                 <button
                   key={division.id}
@@ -403,14 +403,14 @@ function App() {
 
       <footer className="footer">
         <div className="footer-main">
-          <a className="wordmark wordmark--footer" href="#top" aria-label="Something Society, back to top">
-            Something Society
+          <a className="wordmark wordmark--footer" href="#top" aria-label="Umbra Society, back to top">
+            Umbra Society
           </a>
           <p>Publishing / People / Distribution / Instruments</p>
           <Sweep href={`mailto:${EMAIL}`}>{EMAIL}</Sweep>
         </div>
         <div className="footer-base">
-          <span>© 2026 Something Society</span>
+          <span>© 2026 Umbra Society</span>
           <span>San Francisco</span>
           <a href="#top">Back to top</a>
         </div>

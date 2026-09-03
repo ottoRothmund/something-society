@@ -21,7 +21,7 @@ if [ -n "$(git status --porcelain)" ]; then
   exit 1
 fi
 
-# PAGES_BASE makes vite emit /something-society/ asset paths, matching the
+# PAGES_BASE makes vite emit /umbra-society/ asset paths, matching the
 # project-pages subpath. Without it the built HTML points at / and 404s.
 PAGES_BASE=1 npm run build
 

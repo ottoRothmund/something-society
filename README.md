@@ -1,6 +1,6 @@
-# Something Society
+# Umbra Society
 
-A single-page website for Something Society, a cultural R&D company spanning publishing, people, distribution, software, and hardware.
+A single-page website for Umbra Society, a cultural R&D company spanning publishing, people, distribution, software, and hardware.
 
 ## Run locally
 
