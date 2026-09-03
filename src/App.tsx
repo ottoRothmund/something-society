@@ -12,13 +12,6 @@ const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number]
 
 const navItems: [string, string][] = [['Blog', '#blog']]
 
-const facts = [
-  ['04', 'Divisions'],
-  ['01', 'Independent institution'],
-  ['2026', 'Founded'],
-  ['100%', 'Independently held'],
-]
-
 // Routing is hash-based so it works under the GitHub Pages subpath and on
 // Lovable without server config. `#/blog/<slug>` is a post; anything else is
 // the home page, where plain `#blog` / `#top` anchors still behave normally.
@@ -171,17 +164,6 @@ function App() {
           <section className="hero" id="top">
             <SmokeField />
             <div className="hero-inner">
-              <motion.div
-                className="hero-meta"
-                initial={reduceMotion ? false : { opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.15, ease: EASE }}
-              >
-                <span>Independent cultural R&amp;D</span>
-                <span>San Francisco</span>
-                <span>Est. 2026</span>
-              </motion.div>
-
               <motion.h1
                 initial={reduceMotion ? false : { opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -196,7 +178,6 @@ function App() {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.7, delay: 0.28, ease: EASE }}
               >
-                <p className="hero-index" aria-hidden="true">US / 001</p>
                 <div className="hero-intro">
                   <p>
                     Umbra Society publishes arguments, backs singular people, moves ideas through a network,
@@ -205,20 +186,6 @@ function App() {
                 </div>
               </motion.div>
             </div>
-
-            <motion.dl
-              className="facts"
-              initial={reduceMotion ? false : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.36, ease: EASE }}
-            >
-              {facts.map(([value, label]) => (
-                <div key={label}>
-                  <dt>{value}</dt>
-                  <dd>{label}</dd>
-                </div>
-              ))}
-            </motion.dl>
           </section>
 
           <div id="content">

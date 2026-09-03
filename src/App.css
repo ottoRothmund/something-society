@@ -225,17 +225,6 @@ main {
   gap: clamp(48px, 8vw, 120px);
 }
 
-.hero-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px clamp(20px, 3vw, 44px);
-  color: var(--muted-invert);
-  font-family: var(--mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
 .hero h1 {
   max-width: 12ch;
   margin: 0;
@@ -250,15 +239,6 @@ main {
   display: grid;
   align-items: end;
   gap: 28px 40px;
-  grid-template-columns: minmax(120px, 0.35fr) minmax(0, 1fr);
-}
-
-.hero-index {
-  margin: 0;
-  color: var(--muted-invert);
-  font-family: var(--mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.1em;
 }
 
 .hero-intro {
@@ -272,34 +252,6 @@ main {
   font-size: clamp(0.95rem, 1.05vw, 1.05rem);
   line-height: 1.62;
   text-wrap: pretty;
-}
-
-.facts {
-  display: grid;
-  width: min(100%, var(--max));
-  margin: 0 auto;
-  padding: 0 var(--pad);
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-.facts div {
-  padding: 22px 24px 26px 0;
-  border-top: 1px solid var(--line-invert);
-}
-
-.facts dt {
-  font-size: clamp(1.15rem, 1.7vw, 1.5rem);
-  font-weight: 400;
-  letter-spacing: -0.035em;
-}
-
-.facts dd {
-  margin: 10px 0 0;
-  color: var(--muted-invert);
-  font-family: var(--mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
 }
 
 /* ── Sections ── */
@@ -645,10 +597,6 @@ section {
     justify-self: start;
   }
 
-  .facts {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .footer-main {
     grid-template-columns: 1fr;
   }
@@ -658,13 +606,5 @@ section {
   .post-list a {
     grid-template-columns: 1fr;
     gap: 6px;
-  }
-
-  .facts {
-    grid-template-columns: 1fr;
-  }
-
-  .facts div {
-    padding-right: 0;
   }
 }
