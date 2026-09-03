@@ -2,57 +2,15 @@ import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import SmokeField from './SmokeField'
+import { findPost, posts } from './posts'
+import type { Post } from './posts'
 import './App.css'
 
 const EMAIL = 'hello@umbrasociety.org'
+const SITE_TITLE = 'Umbra Society — Cultural R&D'
 const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number]
 
-const navItems: [string, string][] = [
-  ['Divisions', '#divisions'],
-  ['Model', '#model'],
-  ['Magazine', '#magazine'],
-  ['Thesis', '#thesis'],
-  ['Updates', '#updates'],
-]
-
-const divisions = [
-  {
-    id: 'publishing',
-    number: '01',
-    name: 'Publishing',
-    title: 'The magazine',
-    claim: 'Find the signal before the category has a name.',
-    body: 'Essays, reporting, and fiction on the people building what comes after consensus. Printed as an object, not published as feed.',
-    points: ['Quarterly print', 'Long-form reporting', 'Commissioned fiction'],
-  },
-  {
-    id: 'people',
-    number: '02',
-    name: 'People',
-    title: 'The roster',
-    claim: 'Give independent talent a common address.',
-    body: 'Editorial, production, and legal support for writers, engineers, and builders whose work has nowhere institutional to sit.',
-    points: ['Fellowships', 'Residencies', 'Direct commissions'],
-  },
-  {
-    id: 'distribution',
-    number: '03',
-    name: 'Distribution',
-    title: 'The network',
-    claim: 'Move private conviction into public life.',
-    body: 'Research, design, and coordinated release that turn an isolated position into a narrative other people can carry.',
-    points: ['Research desk', 'Media strategy', 'Coordinated release'],
-  },
-  {
-    id: 'instruments',
-    number: '04',
-    name: 'Instruments',
-    title: 'The products',
-    claim: 'Turn the strongest theses into owned assets.',
-    body: 'Software and hardware built around positions we are willing to defend. Ownership keeps the editorial line independent.',
-    points: ['Publishing software', 'Coordination tools', 'Physical goods'],
-  },
-]
+const navItems: [string, string][] = [['Blog', '#blog']]
 
 const facts = [
   ['04', 'Divisions'],
@@ -61,27 +19,28 @@ const facts = [
   ['100%', 'Independently held'],
 ]
 
-const model = [
-  ['01', 'Find signal', 'Publishing surfaces the people and questions nobody else is tracking yet.'],
-  ['02', 'Gather people', 'The institution gives independent talent a shared address and a shared standard.'],
-  ['03', 'Build belief', 'Distribution moves private conviction into public life with a name attached.'],
-  ['04', 'Ship assets', 'The strongest theses become software, hardware, and durable revenue.'],
-]
+// Routing is hash-based so it works under the GitHub Pages subpath and on
+// Lovable without server config. `#/blog/<slug>` is a post; anything else is
+// the home page, where plain `#blog` / `#top` anchors still behave normally.
+type Route = { kind: 'home' } | { kind: 'post'; post: Post } | { kind: 'missing'; slug: string }
 
-const theses = [
-  'Culture determines what capital can see.',
-  'Small coherent groups outrun large indifferent systems.',
-  'A publication should recruit, not merely report.',
-  'Software and hardware are beliefs with interfaces.',
-  'Ownership is the only durable editorial policy.',
-]
+function readRoute(): Route {
+  const match = window.location.hash.match(/^#\/blog\/([^/?#]+)/)
+  if (!match) return { kind: 'home' }
+  const slug = decodeURIComponent(match[1])
+  const post = findPost(slug)
+  return post ? { kind: 'post', post } : { kind: 'missing', slug }
+}
 
-const updates = [
-  ['2026 / Q1', 'Publishing', 'Issue 00 enters production'],
-  ['2026 / Q1', 'People', 'The first fellowship cohort opens for nomination'],
-  ['2026 / Q2', 'Instruments', 'The internal publishing stack becomes a product'],
-  ['2026 / Q2', 'Company', 'The founding circle opens to patrons and operators'],
-]
+function useRoute(): Route {
+  const [route, setRoute] = useState<Route>(readRoute)
+  useEffect(() => {
+    const onHashChange = () => setRoute(readRoute())
+    window.addEventListener('hashchange', onHashChange)
+    return () => window.removeEventListener('hashchange', onHashChange)
+  }, [])
+  return route
+}
 
 function Eyebrow({ index, children }: { index: string; children: ReactNode }) {
   return (
@@ -103,8 +62,8 @@ function Sweep({ href, children, className = '' }: { href: string; children: Rea
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [activeDivision, setActiveDivision] = useState(divisions[0].id)
   const reduceMotion = useReducedMotion()
+  const route = useRoute()
 
   useEffect(() => {
     if (!menuOpen) return
@@ -120,14 +79,25 @@ function App() {
     }
   }, [menuOpen])
 
+  // The post page swaps the whole document, so the browser's own anchor
+  // scrolling misses. Land posts at the top and home anchors on their target.
+  useEffect(() => {
+    document.title = route.kind === 'post' ? `${route.post.title} — Umbra Society` : SITE_TITLE
+    if (route.kind !== 'home') {
+      window.scrollTo({ top: 0 })
+      return
+    }
+    const id = window.location.hash.slice(1)
+    const target = id && document.getElementById(id)
+    if (target) target.scrollIntoView()
+  }, [route])
+
   const reveal = {
     initial: reduceMotion ? false : { opacity: 0, y: 16 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true, amount: 0.15 },
     transition: { duration: 0.6, ease: EASE },
   }
-
-  const active = divisions.find((division) => division.id === activeDivision) ?? divisions[0]
 
   return (
     <main>
@@ -189,224 +159,146 @@ function App() {
               </motion.a>
             ))}
             <a href={`mailto:${EMAIL}`} onClick={() => setMenuOpen(false)}>
-              <span className="site-menu__index">06</span>
+              <span className="site-menu__index">{String(navItems.length + 1).padStart(2, '0')}</span>
               <span>Contact</span>
             </a>
           </motion.nav>
         )}
       </AnimatePresence>
 
-      <section className="hero" id="top">
-        <SmokeField />
-        <div className="hero-inner">
-          <motion.div
-            className="hero-meta"
-            initial={reduceMotion ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.15, ease: EASE }}
-          >
-            <span>Independent cultural R&amp;D</span>
-            <span>San Francisco</span>
-            <span>Est. 2026</span>
-          </motion.div>
+      {route.kind === 'home' && (
+        <>
+          <section className="hero" id="top">
+            <SmokeField />
+            <div className="hero-inner">
+              <motion.div
+                className="hero-meta"
+                initial={reduceMotion ? false : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.15, ease: EASE }}
+              >
+                <span>Independent cultural R&amp;D</span>
+                <span>San Francisco</span>
+                <span>Est. 2026</span>
+              </motion.div>
 
-          <motion.h1
-            initial={reduceMotion ? false : { opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1, ease: EASE }}
-          >
-            Devour the sun.
-          </motion.h1>
+              <motion.h1
+                initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.1, ease: EASE }}
+              >
+                Devour the sun.
+              </motion.h1>
 
-          <motion.div
-            className="hero-foot"
-            initial={reduceMotion ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.7, delay: 0.28, ease: EASE }}
-          >
-            <p className="hero-index" aria-hidden="true">US / 001</p>
-            <div className="hero-intro">
-              <p>
-                Umbra Society publishes arguments, backs singular people, moves ideas through a network,
-                and builds the instruments those ideas require.
-              </p>
-              <div className="hero-links">
-                <Sweep href="#divisions">Explore the institution</Sweep>
-                <Sweep href={`mailto:${EMAIL}?subject=Founding%20circle`}>Join the founding circle</Sweep>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-
-        <motion.dl
-          className="facts"
-          initial={reduceMotion ? false : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.36, ease: EASE }}
-        >
-          {facts.map(([value, label]) => (
-            <div key={label}>
-              <dt>{value}</dt>
-              <dd>{label}</dd>
-            </div>
-          ))}
-        </motion.dl>
-      </section>
-
-      <div id="content">
-        <section className="divisions" id="divisions">
-          <motion.div className="section-intro" {...reveal}>
-            <Eyebrow index="01">Divisions</Eyebrow>
-            <div>
-              <h2>Four instruments. One institution.</h2>
-              <p>Each division works alone. Together, they compound attention into agency.</p>
-            </div>
-          </motion.div>
-
-          <div className="division-system">
-            <div className="division-list" role="tablist" aria-label="Umbra Society divisions">
-              {divisions.map((division) => (
-                <button
-                  key={division.id}
-                  className={`division-row${division.id === active.id ? ' is-active' : ''}`}
-                  type="button"
-                  role="tab"
-                  id={`division-tab-${division.id}`}
-                  aria-selected={division.id === active.id}
-                  aria-controls={`division-panel-${division.id}`}
-                  onClick={() => setActiveDivision(division.id)}
-                >
-                  <span className="division-number">{division.number}</span>
-                  <span className="division-name">{division.name}</span>
-                  <span className="division-claim">{division.claim}</span>
-                </button>
-              ))}
+              <motion.div
+                className="hero-foot"
+                initial={reduceMotion ? false : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.7, delay: 0.28, ease: EASE }}
+              >
+                <p className="hero-index" aria-hidden="true">US / 001</p>
+                <div className="hero-intro">
+                  <p>
+                    Umbra Society publishes arguments, backs singular people, moves ideas through a network,
+                    and builds the instruments those ideas require.
+                  </p>
+                </div>
+              </motion.div>
             </div>
 
-            <motion.aside
-              key={active.id}
-              className="division-detail"
-              role="tabpanel"
-              id={`division-panel-${active.id}`}
-              aria-labelledby={`division-tab-${active.id}`}
+            <motion.dl
+              className="facts"
               initial={reduceMotion ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.3, ease: EASE }}
+              transition={{ duration: 0.6, delay: 0.36, ease: EASE }}
             >
-              <div>
-                <p className="division-detail__meta">{active.number} / {active.name}</p>
-                <h3>{active.title}</h3>
-                <p className="division-detail__body">{active.body}</p>
-              </div>
-              <div>
-                <ul>
-                  {active.points.map((point) => <li key={point}>{point}</li>)}
+              {facts.map(([value, label]) => (
+                <div key={label}>
+                  <dt>{value}</dt>
+                  <dd>{label}</dd>
+                </div>
+              ))}
+            </motion.dl>
+          </section>
+
+          <div id="content">
+            <section className="blog" id="blog">
+              <motion.div className="section-intro" {...reveal}>
+                <Eyebrow index="01">Blog</Eyebrow>
+                <div>
+                  <h2>Arguments, in writing.</h2>
+                  <p>What the institution is thinking about, dated and signed.</p>
+                </div>
+              </motion.div>
+
+              {posts.length === 0 ? (
+                <p className="blog-empty">Nothing published yet.</p>
+              ) : (
+                <ul className="post-list">
+                  {posts.map((post, index) => (
+                    <motion.li key={post.slug} {...reveal} transition={{ duration: 0.45, delay: index * 0.03, ease: EASE }}>
+                      <a href={`#/blog/${post.slug}`}>
+                        <span className="post-date">{post.dateLabel}</span>
+                        <span className="post-title">{post.title}</span>
+                        <span className="post-summary">{post.summary}</span>
+                      </a>
+                    </motion.li>
+                  ))}
                 </ul>
-                <Sweep href={`mailto:${EMAIL}?subject=${encodeURIComponent(active.name)}`}>
-                  Work with {active.name.toLowerCase()}
-                </Sweep>
-              </div>
-            </motion.aside>
+              )}
+            </section>
           </div>
-        </section>
+        </>
+      )}
 
-        <section className="model" id="model">
-          <motion.div className="model-heading" {...reveal}>
-            <Eyebrow index="02">Operating model</Eyebrow>
-            <h2>Attention should become something people can use.</h2>
+      {route.kind === 'post' && (
+        <article className="post" id="content">
+          <motion.div
+            className="post-head"
+            initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: EASE }}
+          >
+            <p className="eyebrow">
+              <span>Blog</span>
+              <span>{route.post.dateLabel}</span>
+            </p>
+            <h1>{route.post.title}</h1>
           </motion.div>
+          <motion.div
+            className="post-body"
+            initial={reduceMotion ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.12, ease: EASE }}
+            dangerouslySetInnerHTML={{ __html: route.post.html }}
+          />
+          <div className="post-foot">
+            <Sweep href="#blog">All posts</Sweep>
+            <Sweep href={`mailto:${EMAIL}?subject=${encodeURIComponent(route.post.title)}`}>Reply by email</Sweep>
+          </div>
+        </article>
+      )}
 
-          <ol className="model-list">
-            {model.map(([number, title, text], index) => (
-              <motion.li key={number} {...reveal} transition={{ duration: 0.5, delay: index * 0.04, ease: EASE }}>
-                <span className="model-number">{number}</span>
-                <h3>{title}</h3>
-                <p>{text}</p>
-              </motion.li>
-            ))}
-          </ol>
-        </section>
-
-        <section className="issue" id="magazine">
-          <motion.div className="issue-inner" {...reveal}>
-            <Eyebrow index="03">Magazine</Eyebrow>
-            <div className="issue-title">
-              <h2>Issue 00</h2>
-              <p>The World After Consensus</p>
-            </div>
-            <div className="issue-quote">
-              <blockquote>
-                The institutions that lost consensus will not explain what comes next. We are building the record
-                while it is still being written.
-              </blockquote>
-            </div>
-            <div className="issue-actions">
-              <span>In production / 2026</span>
-              <Sweep href={`mailto:${EMAIL}?subject=Issue%2000%20pitch`}>Pitch Issue 00</Sweep>
-              <Sweep href={`mailto:${EMAIL}?subject=Issue%2000%20updates`}>Get updates</Sweep>
-            </div>
-          </motion.div>
-        </section>
-
-        <section className="thesis" id="thesis">
-          <motion.div className="thesis-lead" {...reveal}>
-            <Eyebrow index="04">Thesis</Eyebrow>
-            <h2>Culture is infrastructure.</h2>
-          </motion.div>
-
-          <ol className="thesis-list">
-            {theses.map((thesis, index) => (
-              <motion.li key={thesis} {...reveal} transition={{ duration: 0.45, delay: index * 0.03, ease: EASE }}>
-                <span>{String(index + 1).padStart(2, '0')}</span>
-                <p>{thesis}</p>
-              </motion.li>
-            ))}
-          </ol>
-        </section>
-
-        <section className="updates" id="updates">
-          <motion.div className="section-intro section-intro--compact" {...reveal}>
-            <Eyebrow index="05">Updates</Eyebrow>
-            <div>
-              <h2>Now and next.</h2>
-              <p>Work in production across the institution.</p>
-            </div>
-          </motion.div>
-
-          <ul className="update-list">
-            {updates.map(([date, kind, title], index) => (
-              <motion.li key={title} {...reveal} transition={{ duration: 0.45, delay: index * 0.03, ease: EASE }}>
-                <a href={`mailto:${EMAIL}?subject=${encodeURIComponent(title)}`}>
-                  <span className="update-date">{date}</span>
-                  <span className="update-kind">{kind}</span>
-                  <span className="update-title">{title}</span>
-                </a>
-              </motion.li>
-            ))}
-          </ul>
-        </section>
-
-        <section className="cta" id="founding">
-          <motion.div className="cta-inner" {...reveal}>
-            <p className="cta-label">Founding circle / Open</p>
-            <h2>Build the institution before the category exists.</h2>
-            <div className="cta-foot">
-              <p>For investors, patrons, and collaborators who understand that culture is infrastructure.</p>
-              <div>
-                <Sweep href={`mailto:${EMAIL}?subject=Founding%20circle`}>Request the memo</Sweep>
-                <Sweep href={`mailto:${EMAIL}`}>Start a conversation</Sweep>
-              </div>
-            </div>
-          </motion.div>
-        </section>
-      </div>
+      {route.kind === 'missing' && (
+        <article className="post" id="content">
+          <div className="post-head">
+            <p className="eyebrow">
+              <span>Blog</span>
+              <span>404</span>
+            </p>
+            <h1>No post at &ldquo;{route.slug}&rdquo;.</h1>
+          </div>
+          <div className="post-foot">
+            <Sweep href="#blog">All posts</Sweep>
+          </div>
+        </article>
+      )}
 
       <footer className="footer">
         <div className="footer-main">
           <a className="wordmark wordmark--footer" href="#top" aria-label="Umbra Society, back to top">
             Umbra Society
           </a>
-          <p>Publishing / People / Distribution / Instruments</p>
           <Sweep href={`mailto:${EMAIL}`}>{EMAIL}</Sweep>
         </div>
         <div className="footer-base">
